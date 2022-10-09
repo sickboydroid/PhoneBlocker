@@ -7,4 +7,19 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="primaryColor">#6d4c41</color>
+    <color name="primaryLightColor">#9c786c</color>
+    <color name="primaryDarkColor">#40241a</color>
+    <color name="secondaryColor">#8d6e63</color>
+    <color name="secondaryLightColor">#be9c91</color>
+    <color name="secondaryDarkColor">#5f4339</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
+    <color name="materialLight">#E5E3F1</color>
+    <color name="materialDark">#5C5A5B</color>
+    <color name="materialLightBlack">#B5B5B5</color>
+    <color name="materialTeal">#A6A184</color>
+    <color name="materialPink">#A29CF4</color>
+
 </resources>

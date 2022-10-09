@@ -4,15 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="7dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_prevent_power_off"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:text="@string/prevent_user_from_switching_off_the_phone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_block_notifications"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/block_all_the_notifications"
+        app:layout_constraintTop_toBottomOf="@+id/switch_prevent_power_off"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switch_block_calls"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="@string/block_all_the_calls"
+        app:layout_constraintTop_toBottomOf="@+id/switch_block_notifications"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/btn_lock_device"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lock_device_for_30_seconds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch_block_calls" />
 </androidx.constraintlayout.widget.ConstraintLayout>

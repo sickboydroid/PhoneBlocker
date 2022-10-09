@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Phone Blocker</string>
+    <string name="label_admin_receiver">Admin Receiver</string>
+    <string name="description_admin_receiver">This permission is used to lock the device for specified amount of time</string>
+    <string name="admin_service_notif_ticker">Notification Ticker</string>
+    <string name="admin_service_notif_content_title">This a title</string>
+    <string name="default_notification_channel_name">Default Notifications</string>
+    <string name="admin_service_notif_content">This is the content</string>
+    <string name="block_all_the_notifications">Block all the notifications</string>
+    <string name="block_all_the_calls">Block all the calls</string>
+    <string name="lock_device_for_30_seconds">Lock device for 30 seconds</string>
+    <string name="prevent_user_from_switching_off_the_phone">Prevent user from switching off the phone (recommended)</string>
 </resources>
