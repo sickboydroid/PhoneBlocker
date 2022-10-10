@@ -2,36 +2,31 @@ package com.sickboydroid.phoneblocker.services;
 
 import android.app.KeyguardManager;
 import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.app.admin.DevicePolicyManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 import com.sickboydroid.phoneblocker.Constants;
-import com.sickboydroid.phoneblocker.Countdown;
 import com.sickboydroid.phoneblocker.R;
 
 public class BlockerService extends Service {
     private final String TAG = "BlockerService";
-    private final int NOTIFICATION_ID = 23;
-    private boolean isCountdownComplete = false;
+    private final int FOREGROUND_NOTIFICATION_ID = 23;
+    private final int COMPLETION_NOTIFICATION_ID = 24;
+    private CountdownManager countdownManager;
+    private NotificationCompat.Builder notificationBuilder;
     private boolean isBlockerThreadRunning = false;
     private boolean preventPowerOff;
     private boolean blockNotifications;
     private boolean blockCalls;
-
-    private final Runnable countdownCompletionRunnable = () -> {
-        Log.d(TAG, "Countdown completed. Device can be unlocked!!");
-        isCountdownComplete = true;
-        stopSelf();
-    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -46,9 +41,16 @@ public class BlockerService extends Service {
         long countdownDuration = intent.getLongExtra(Constants.EXTRA_COUNTDOWN_DURATION, 60_000L);
         showNotification();
         blockCallsAndNotifications();
-        Countdown.startCountdown(new Handler(), countdownCompletionRunnable, countdownDuration);
+        countdownManager = CountdownManager.startCountdown(countdownDuration);
         startBlockerThread();
         return START_REDELIVER_INTENT;
+    }
+
+    private void onCountdownCompletes() {
+        Log.d(TAG, "Countdown completed. Device can be unlocked!!");
+        Notification notification = new NotificationCompat.Builder(this, Constants.DEFAULT_NOTIFICATION_CHANNEL).setContentText("Timer has completed. You can now use your phone normally").setContentTitle("Timer Completed").setTicker("Timer Completed Ticker").setSmallIcon(R.mipmap.ic_launcher_round).setPriority(NotificationCompat.PRIORITY_MAX).build();
+        NotificationManagerCompat.from(this).notify(COMPLETION_NOTIFICATION_ID, notification);
+        stopSelf();
     }
 
     private void blockCallsAndNotifications() {
@@ -63,23 +65,47 @@ public class BlockerService extends Service {
     }
 
     private void showNotification() {
-        if (Build.VERSION.SDK_INT >= 26) {
-            Notification build = new Notification.Builder(getApplicationContext(), Constants.NOTIFICATION_CHANNEL_NAME).setTicker(getString(R.string.admin_service_notif_ticker)).setSmallIcon(R.mipmap.ic_launcher_round).setContentTitle(getString(R.string.admin_service_notif_content_title)).setContentText(getString(R.string.admin_service_notif_content)).build();
-            NotificationChannel notificationChannel = new NotificationChannel(Constants.NOTIFICATION_CHANNEL_NAME, getString(R.string.default_notification_channel_name), NotificationManager.IMPORTANCE_HIGH);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(notificationChannel);
-            notificationManager.notify(NOTIFICATION_ID, build);
-            startForeground(NOTIFICATION_ID, build);
-        } else {
-            startForeground(NOTIFICATION_ID, new Notification.Builder(getApplicationContext()).setTicker(getString(R.string.admin_service_notif_ticker)).setSmallIcon(R.mipmap.ic_launcher_round).setContentTitle(getString(R.string.admin_service_notif_content_title)).setContentText(getString(R.string.admin_service_notif_content)).setPriority(Notification.PRIORITY_HIGH).build());
+        notificationBuilder = new NotificationCompat.Builder(this, Constants.DEFAULT_NOTIFICATION_CHANNEL).setSmallIcon(R.mipmap.ic_launcher_round).setContentTitle(getString(R.string.blocker_service_notification_content_title)).setOnlyAlertOnce(true).setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        Notification notification = notificationBuilder.build();
+        NotificationManagerCompat.from(this).notify(FOREGROUND_NOTIFICATION_ID, notification);
+        startForeground(FOREGROUND_NOTIFICATION_ID, notification);
+    }
+
+    private void updateNotification() {
+        long remainingMillis = countdownManager.getRemainingMillis();
+        int remainingSeconds = (int) (remainingMillis / 1000) % 60;
+        int remainingMinutes = (int) ((remainingMillis / (1000 * 60)) % 60);
+        int remainingHours = (int) (remainingMillis / (1000 * 60 * 60));
+        notificationBuilder.setContentText("Remaining: " + remainingHours + " hours " + remainingMinutes + " minutes " + remainingSeconds + " seconds");
+        NotificationManagerCompat.from(this).notify(FOREGROUND_NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    private static class CountdownManager {
+        long countdownEnd;
+
+        private CountdownManager(long durationMillis) {
+            countdownEnd = System.currentTimeMillis() + durationMillis;
+        }
+
+        public static CountdownManager startCountdown(long durationMillis) {
+            return new CountdownManager(durationMillis);
+        }
+
+        public boolean isCountdownComplete() {
+            return System.currentTimeMillis() > countdownEnd;
+        }
+
+        public long getRemainingMillis() {
+            if (isCountdownComplete()) return -1;
+            return countdownEnd - System.currentTimeMillis();
         }
     }
 
     private class Blocker extends Thread {
-        private PowerManager powerManager;
-        private KeyguardManager keyguardManager;
-        private DevicePolicyManager dpm;
-        private Handler handler;
+        private final PowerManager powerManager;
+        private final KeyguardManager keyguardManager;
+        private final DevicePolicyManager dpm;
+        private final Handler handler;
 
         public Blocker(Handler handler) {
             powerManager = (PowerManager) getSystemService(POWER_SERVICE);
@@ -92,8 +118,10 @@ public class BlockerService extends Service {
         public void run() {
             Log.i(TAG, "Blocker thread has started");
             isBlockerThreadRunning = true;
-            while (!isCountdownComplete) {
-                sleepThread(200);
+            while (!countdownManager.isCountdownComplete()) {
+                Log.d(TAG, "Remaining Time: " + countdownManager.getRemainingMillis());
+                updateNotification();
+                sleepThread(250);
                 // Screen is off, just pass for now
                 if (!powerManager.isInteractive()) {
                     sleepThread(500);
@@ -103,10 +131,10 @@ public class BlockerService extends Service {
                 if (preventPowerOff)
                     handler.post(() -> sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)));
                 // Screen is on and also device is unlocked so lock it
-                if (!keyguardManager.isKeyguardLocked())
-                    dpm.lockNow();
+                if (!keyguardManager.isKeyguardLocked()) dpm.lockNow();
             }
             isBlockerThreadRunning = false;
+            onCountdownCompletes();
             Log.i(TAG, "Blocker thread has ended");
         }
 
