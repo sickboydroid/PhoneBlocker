@@ -1,4 +1,4 @@
-package com.sickboydroid.phoneblocker;
+package com.sickboydroid.phoneblocker.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +12,10 @@ public class AppPreferences {
 
     public void changePreference(String key, String newValue) {
         prefs.edit().putString(key, newValue).apply();
+    }
+
+    public void changePreference(String key, long newValue) {
+        prefs.edit().putLong(key, newValue).apply();
     }
 
     public void changePreference(String key, int newValue) {
@@ -28,6 +32,14 @@ public class AppPreferences {
 
     public String getString(String key, String defaultValue) {
         return prefs.getString(key, defaultValue);
+    }
+
+    public long getLong(String key) {
+        return getLong(key, -1);
+    }
+
+    public long getLong(String key, long defaultValue) {
+        return prefs.getLong(key, defaultValue);
     }
 
     public int getInt(String key) {

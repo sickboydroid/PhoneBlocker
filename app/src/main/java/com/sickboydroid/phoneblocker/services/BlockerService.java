@@ -14,8 +14,9 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.sickboydroid.phoneblocker.Constants;
 import com.sickboydroid.phoneblocker.R;
+import com.sickboydroid.phoneblocker.utils.BlockerSession;
+import com.sickboydroid.phoneblocker.utils.Constants;
 
 public class BlockerService extends Service {
     private final String TAG = "BlockerService";
@@ -35,10 +36,11 @@ public class BlockerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        preventPowerOff = intent.getBooleanExtra(Constants.EXTRA_PREVENT_POWER_OFF, true);
-        blockNotifications = intent.getBooleanExtra(Constants.EXTRA_BLOCK_NOTIFICATIONS, false);
-        blockCalls = intent.getBooleanExtra(Constants.EXTRA_BLOCK_CALLS, false);
-        long countdownDuration = intent.getLongExtra(Constants.EXTRA_COUNTDOWN_DURATION, 60_000L);
+        BlockerSession blockerSession = new BlockerSession(this);
+        preventPowerOff = blockerSession.preventFromPowerOff();
+        blockNotifications = blockerSession.blockNotifications();
+        blockCalls = blockerSession.blockCalls();
+        long countdownDuration = blockerSession.getDuration();
         showNotification();
         blockCallsAndNotifications();
         countdownManager = CountdownManager.startCountdown(countdownDuration);

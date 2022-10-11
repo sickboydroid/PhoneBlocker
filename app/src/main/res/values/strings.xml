@@ -11,4 +11,17 @@
     <string name="lock_duration">Lock Duration</string>
     <string name="plus_sign">+</string>
     <string name="minus_sign">-</string>
+    <string name="lock_device_button_text">Lock device for %d hours %d minutes and %d seconds</string>
+    <string name="x_hrs">%d hr</string>
+    <string name="x_min">%d min</string>
+    <string name="x_secs">%d secs</string>
+    <string name="title_activity_appreciation">AppreciationActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

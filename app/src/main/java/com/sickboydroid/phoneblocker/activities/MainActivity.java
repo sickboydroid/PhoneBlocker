@@ -1,4 +1,4 @@
-package com.sickboydroid.phoneblocker;
+package com.sickboydroid.phoneblocker.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -11,7 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.sickboydroid.phoneblocker.utils.AppPreferences;
+import com.sickboydroid.phoneblocker.utils.BlockerSession;
+import com.sickboydroid.phoneblocker.utils.Constants;
+import com.sickboydroid.phoneblocker.R;
 import com.sickboydroid.phoneblocker.services.BlockerService;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -36,8 +43,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpAds();
         notifyAboutAdminPermission();
         setUpViews();
+    }
+
+    private void setUpAds() {
+        MobileAds.initialize(this, null);
+        AdView bannerAd = findViewById(R.id.adview_banner);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        bannerAd.loadAd(adRequest);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -78,42 +93,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.btn_increment_hours:
-                    durationHours++;
-                break;
-            case R.id.btn_decrement_hours:
-                if(durationHours != 0)
-                    durationHours--;
-                break;
-            case R.id.btn_increment_minutes:
-                durationMinutes += 5;
-                if(durationMinutes == 60) {
-                    durationHours++;
-                    durationMinutes = 0;
-                }
-                break;
-            case R.id.btn_decrement_minutes:
-                if(durationMinutes != 0)
-                    durationMinutes -= 5;
-                break;
-            case R.id.btn_increment_seconds:
-                durationSeconds += 10;
-                if(durationSeconds == 60)
-                    durationSeconds = 0;
-                break;
-            case R.id.btn_decrement_seconds:
-                if(durationSeconds != 0)
-                    durationSeconds -= 10;
+        int id = view.getId();
+        if (id == R.id.btn_increment_hours) {
+            durationHours++;
+        } else if (id == R.id.btn_decrement_hours) {
+            if (durationHours != 0) durationHours--;
+        } else if (id == R.id.btn_increment_minutes) {
+            durationMinutes += 5;
+            if (durationMinutes == 60) {
+                durationHours++;
+                durationMinutes = 0;
+            }
+        } else if (id == R.id.btn_decrement_minutes) {
+            if (durationMinutes != 0) durationMinutes -= 5;
+        } else if (id == R.id.btn_increment_seconds) {
+            durationSeconds += 10;
+            if (durationSeconds == 60) durationSeconds = 0;
+        } else if (id == R.id.btn_decrement_seconds) {
+            if (durationSeconds != 0) durationSeconds -= 10;
         }
         updateDurationTextViews();
     }
 
     private void updateDurationTextViews() {
-        tvDurationHours.setText(String.valueOf(durationHours) + " hrs");
-        tvDurationMinutes.setText(String.valueOf(durationMinutes) + " mins");
-        tvDurationSeconds.setText(String.valueOf(durationSeconds) + " secs");
-        btnLockDevice.setText("Lock device for " + durationHours + " hours " + durationMinutes + " mins " + durationSeconds + " secs");
+        tvDurationHours.setText(String.format(getString(R.string.x_hrs), durationHours));
+        tvDurationMinutes.setText(String.format(getString(R.string.x_min), durationMinutes));
+        tvDurationSeconds.setText(String.format(getString(R.string.x_secs), durationSeconds));
+        btnLockDevice.setText(String.format(getString(R.string.lock_device_button_text), durationHours, durationMinutes, durationSeconds));
     }
 
     private void startBlocking() {
@@ -123,14 +129,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         durationMillis += durationSeconds * 1000L;
 
         Intent intentBlockerService = new Intent(this, BlockerService.class);
-        intentBlockerService.putExtra(Constants.EXTRA_PREVENT_POWER_OFF, switchPreventPowerOff.isChecked());
-        intentBlockerService.putExtra(Constants.EXTRA_BLOCK_CALLS, switchBlockCalls.isChecked());
-        intentBlockerService.putExtra(Constants.EXTRA_BLOCK_NOTIFICATIONS, switchBlockCalls.isChecked());
-        intentBlockerService.putExtra(Constants.EXTRA_COUNTDOWN_DURATION, durationMillis);
+        BlockerSession session = new BlockerSession(this);
+        session.createSession(durationMillis, switchPreventPowerOff.isChecked(), switchBlockCalls.isChecked(), switchBlockNotifications.isChecked());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(intentBlockerService);
-        else
-            startService(intentBlockerService);
+        else startService(intentBlockerService);
     }
 
     private void notifyAboutAdminPermission() {

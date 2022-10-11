@@ -3,29 +3,32 @@ package com.sickboydroid.phoneblocker;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationManagerCompat;
+
+import com.sickboydroid.phoneblocker.utils.Constants;
 
 public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
-//        if(shouldShowInitialScreens()) {
-//
-//            return;
-//        }
-//
-//        if(hasAdminPermission()) {
-//            return;
-//        }
-//
-//        if(hasOverlayPermission()) {
-//            return;
-//        }
-//        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+/*
+        if(shouldShowInitialScreens()) {
+
+            return;
+        }
+
+        if(hasAdminPermission()) {
+            return;
+        }
+
+        if(hasOverlayPermission()) {
+            return;
+        }
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+*/
     }
 
     private void createNotificationChannel() {

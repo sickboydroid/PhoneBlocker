@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:padding="7dp"
-    tools:context=".MainActivity">
+    tools:context=".activities.MainActivity">
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/switch_prevent_power_off"
@@ -172,4 +173,14 @@
         app:layout_constraintTop_toBottomOf="@+id/switch_block_calls"
         app:layout_constraintVertical_bias="0.3" />
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adview_banner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
+<!--        ads:adUnitId="ca-app-pub-3970034979547566/1565738930"/>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

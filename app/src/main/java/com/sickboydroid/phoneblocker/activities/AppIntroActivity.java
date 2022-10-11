@@ -1,4 +1,4 @@
-package com.sickboydroid.phoneblocker;
+package com.sickboydroid.phoneblocker.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
