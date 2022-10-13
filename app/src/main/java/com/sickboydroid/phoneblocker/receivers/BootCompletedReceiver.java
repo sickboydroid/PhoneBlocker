@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-aimport com.sickboydroid.phoneblocker.activities.AppreciationActivity;
-import com.sickboydroid.phoneblocker.activities.MainActivity;
+import com.sickboydroid.phoneblocker.activities.AppreciationActivity;
 import com.sickboydroid.phoneblocker.services.BlockerService;
 import com.sickboydroid.phoneblocker.utils.BlockerSession;
 

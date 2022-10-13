@@ -15,6 +15,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.sickboydroid.phoneblocker.R;
+import com.sickboydroid.phoneblocker.activities.AppreciationActivity;
 import com.sickboydroid.phoneblocker.utils.BlockerSession;
 import com.sickboydroid.phoneblocker.utils.Constants;
 
@@ -52,6 +53,8 @@ public class BlockerService extends Service {
         Log.d(TAG, "Countdown completed. Device can be unlocked!!");
         Notification notification = new NotificationCompat.Builder(this, Constants.DEFAULT_NOTIFICATION_CHANNEL).setContentText("Timer has completed. You can now use your phone normally").setContentTitle("Timer Completed").setTicker("Timer Completed Ticker").setSmallIcon(R.mipmap.ic_launcher_round).setPriority(NotificationCompat.PRIORITY_MAX).build();
         NotificationManagerCompat.from(this).notify(COMPLETION_NOTIFICATION_ID, notification);
+        Intent intentAppreciationActivity = new Intent(this, AppreciationActivity.class);
+        startActivity(intentAppreciationActivity);
         stopSelf();
     }
 
