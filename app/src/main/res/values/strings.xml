@@ -6,22 +6,26 @@
     <string name="default_notification_channel_name">Default Notifications</string>
     <string name="block_all_the_notifications">Block all the notifications</string>
     <string name="block_all_the_calls">Block all the calls</string>
-    <string name="lock_device_for_30_seconds">Lock device for 30 seconds</string>
     <string name="prevent_user_from_switching_off_the_phone">Prevent user from switching off the phone (recommended)</string>
     <string name="lock_duration">Lock Duration</string>
     <string name="plus_sign">+</string>
     <string name="minus_sign">-</string>
-    <string name="lock_device_button_text">Lock device for %d hours %d minutes and %d seconds</string>
+    <string name="ok">ok</string>
+    <string name="lock_device_button_text">Lock device for %d hrs %d min and %d secs</string>
     <string name="x_hrs">%d hr</string>
     <string name="x_min">%d min</string>
     <string name="x_secs">%d secs</string>
     <string name="title_activity_appreciation">AppreciationActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="finishing_up">Finishing up…</string>
+    <string name="done">Done</string>
+    <string name="select_duration">Select Duration:</string>
+    <string name="prevent_phone_calls_description">Reject all the call automatically. World can wait for few hours</string>
+    <string name="prevent_phone_calls">Prevent Phone calls</string>
+    <string name="prevent_notifications_description">Notifications are the biggest distractions. Block them during lock time</string>
+    <string name="prevent_notifications">Prevent Notifications</string>
+    <string name="prevent_power_off_descriptions">This helps the app to better control your device during lock time</string>
+    <string name="prevent_power_off">Prevent Power Off</string>
+    <string name="about">About</string>
+    <string name="contact_us">For any suggestions please mail us at sickboydroid@gmail.com</string>
+    <string name="app_motive_description">We made this app for the people who find it difficult to overcome the addication of using smartphone. We hope you liked it</string>
 </resources>

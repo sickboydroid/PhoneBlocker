@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
+aimport com.sickboydroid.phoneblocker.activities.AppreciationActivity;
+import com.sickboydroid.phoneblocker.activities.MainActivity;
 import com.sickboydroid.phoneblocker.services.BlockerService;
 import com.sickboydroid.phoneblocker.utils.BlockerSession;
 
@@ -23,7 +25,8 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             else
                 context.startService(intentBlockerService);
         } else if(!blockerSession.hasShownAppreciationActivity()) {
-            //TODO: Start activity
+            Intent intentAppreciationActivity = new Intent(context, AppreciationActivity.class);
+            context.startActivity(intentAppreciationActivity);
         }
     }
 }

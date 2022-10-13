@@ -7,6 +7,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.android.gms.ads.MobileAds;
 import com.sickboydroid.phoneblocker.utils.Constants;
 
 public class BaseApplication extends Application {
@@ -14,6 +15,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
+        MobileAds.initialize(this);
 /*
         if(shouldShowInitialScreens()) {
 

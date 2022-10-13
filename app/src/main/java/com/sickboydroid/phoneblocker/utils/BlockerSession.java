@@ -56,4 +56,6 @@ public class BlockerSession {
     public void setHasShownAppreciationActivity(boolean shown) {
         prefs.changePreference(Constants.PREF_BLOCK_SESSION_HAS_SHOWN_APPRECIATION_ACTIVITY, shown);
     }
+
+
 }

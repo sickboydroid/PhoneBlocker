@@ -4,17 +4,21 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.sickboydroid.phoneblocker.dialogs.AboutDialog;
 import com.sickboydroid.phoneblocker.utils.AppPreferences;
 import com.sickboydroid.phoneblocker.utils.BlockerSession;
 import com.sickboydroid.phoneblocker.utils.Constants;
@@ -22,9 +26,9 @@ import com.sickboydroid.phoneblocker.R;
 import com.sickboydroid.phoneblocker.services.BlockerService;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private SwitchMaterial switchPreventPowerOff;
-    private SwitchMaterial switchBlockNotifications;
-    private SwitchMaterial switchBlockCalls;
+    private SwitchCompat switchPreventPowerOff;
+    private SwitchCompat switchBlockNotifications;
+    private SwitchCompat switchBlockCalls;
     private Button btnLockDevice;
     private Button btnIncrementHours;
     private Button btnIncrementMinutes;
@@ -43,16 +47,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setUpToolbar();
         setUpAds();
         notifyAboutAdminPermission();
         setUpViews();
     }
 
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.activity_toolbar);
+        toolbar.setSubtitle(R.string.app_name);
+        toolbar.inflateMenu(R.menu.main_menu);
+        toolbar.setOnMenuItemClickListener((MenuItem item) -> {
+            if(item.getItemId() == R.id.menu_about)
+                showAboutDialog();
+            return true;
+        });
+    }
+
     private void setUpAds() {
-        MobileAds.initialize(this, null);
         AdView bannerAd = findViewById(R.id.adview_banner);
         AdRequest adRequest = new AdRequest.Builder().build();
         bannerAd.loadAd(adRequest);
+    }
+
+    private void showAboutDialog() {
+        startActivity(new Intent(this,AboutDialog.class));
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -70,16 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvDurationMinutes = findViewById(R.id.tv_duration_minutes);
         tvDurationSeconds = findViewById(R.id.tv_duration_seconds);
 
-//        btnIncrementMinutes.setOnTouchListener((View.OnTouchListener) (view, motionEvent) ->  {
-//            switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-//                case MotionEvent.ACTION_DOWN:
-//
-//                    break;
-//                case MotionEvent.ACTION_UP:
-//                    break;
-//            }
-//            return true;
-//        });
+        // TODO: Add touch listener to increase duration on holding down the button
         btnLockDevice = findViewById(R.id.btn_lock_device);
         btnIncrementHours.setOnClickListener(this);
         btnDecrementHours.setOnClickListener(this);
@@ -100,10 +110,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (durationHours != 0) durationHours--;
         } else if (id == R.id.btn_increment_minutes) {
             durationMinutes += 5;
-            if (durationMinutes == 60) {
-                durationHours++;
+            if(durationMinutes == 60)
                 durationMinutes = 0;
-            }
         } else if (id == R.id.btn_decrement_minutes) {
             if (durationMinutes != 0) durationMinutes -= 5;
         } else if (id == R.id.btn_increment_seconds) {
