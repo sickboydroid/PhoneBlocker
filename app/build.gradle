@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace 'com.sickboydroid.phoneblocker'
-    compileSdk 32
+    namespace 'com.tangledbytes.phoneblocker'
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.sickboydroid.phoneblocker"
+        applicationId 'com.tangledbytes.phoneblocker'
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 

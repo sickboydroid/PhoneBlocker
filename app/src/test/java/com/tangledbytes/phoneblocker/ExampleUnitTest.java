@@ -1,4 +1,4 @@
-package com.sickboydroid.phoneblocker;
+package com.tangledbytes.phoneblocker;
 
 import org.junit.Test;
 

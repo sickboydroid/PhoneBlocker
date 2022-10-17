@@ -1,4 +1,4 @@
-package com.sickboydroid.phoneblocker;
+package com.tangledbytes.phoneblocker;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.sickboydroid.phoneblocker", appContext.getPackageName());
+        assertEquals("com.sickboydroid.com.tangledbytes.phoneblocker", appContext.getPackageName());
     }
 }

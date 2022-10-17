@@ -28,4 +28,10 @@
     <string name="about">About</string>
     <string name="contact_us">For any suggestions please mail us at sickboydroid@gmail.com</string>
     <string name="app_motive_description">We made this app for the people who find it difficult to overcome the addication of using smartphone. We hope you liked it</string>
+    <string name="great_work">Great Work!</string>
+    <string name="saving_up_your_progress">Saving up your progress...</string>
+    <string name="finish">Finish</string>
+    <string name="hour_limit_exceeded">You can only lock your device for maximum of 16 hours</string>
+    <string name="granted">Already Granted!</string>
+    <string name="grant">Grant Permission</string>
 </resources>

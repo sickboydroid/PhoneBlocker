@@ -1,4 +1,4 @@
-package com.sickboydroid.phoneblocker.activities;
+package com.tangledbytes.phoneblocker.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,8 +19,8 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-import com.sickboydroid.phoneblocker.R;
-import com.sickboydroid.phoneblocker.utils.BlockerSession;
+import com.tangledbytes.phoneblocker.R;
+import com.tangledbytes.phoneblocker.utils.BlockerSession;
 
 import java.util.Random;
 

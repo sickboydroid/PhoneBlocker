@@ -1,6 +1,5 @@
-package com.sickboydroid.phoneblocker.activities;
+package com.tangledbytes.phoneblocker.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,20 +9,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.sickboydroid.phoneblocker.dialogs.AboutDialog;
-import com.sickboydroid.phoneblocker.utils.AppPreferences;
-import com.sickboydroid.phoneblocker.utils.BlockerSession;
-import com.sickboydroid.phoneblocker.utils.Constants;
-import com.sickboydroid.phoneblocker.R;
-import com.sickboydroid.phoneblocker.services.BlockerService;
+import com.tangledbytes.phoneblocker.R;
+import com.tangledbytes.phoneblocker.dialogs.AboutDialog;
+import com.tangledbytes.phoneblocker.services.BlockerService;
+import com.tangledbytes.phoneblocker.utils.AppPreferences;
+import com.tangledbytes.phoneblocker.utils.BlockerSession;
+import com.tangledbytes.phoneblocker.utils.Constants;
+import com.tangledbytes.phoneblocker.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private SwitchCompat switchPreventPowerOff;
@@ -39,18 +37,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvDurationHours;
     private TextView tvDurationMinutes;
     private TextView tvDurationSeconds;
-    private int durationHours = 1;
-    private int durationMinutes = 30;
-    private int durationSeconds = 0;
+    //TODO: set time to hrs = 1, mins = 30, seconds = 0
+    private int durationHours = 0;
+    private int durationMinutes = 0;
+    private int durationSeconds = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (shouldShowIntro()) {
+            Intent intentAppIntro = new Intent(this, AppIntroActivity.class);
+            startActivity(intentAppIntro);
+            finish();
+        } else if (!Utils.hasBootPermission(this) || !Utils.hasDeviceAdminPermission(this)) {
+            Intent intentAppIntro = new Intent(this, AppIntroActivity.class);
+            intentAppIntro.putExtra(Constants.EXTRA_REQUEST_ONLY_PERMISSIONS, true);
+            startActivity(intentAppIntro);
+            finish();
+        }
         setContentView(R.layout.activity_main);
         setUpToolbar();
         setUpAds();
-        notifyAboutAdminPermission();
         setUpViews();
+    }
+
+    private boolean shouldShowIntro() {
+        return !new AppPreferences(this).getBoolean(Constants.PREF_HAS_SEEN_APP_INTRO, false);
     }
 
     private void setUpToolbar() {
@@ -58,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar.setSubtitle(R.string.app_name);
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener((MenuItem item) -> {
-            if(item.getItemId() == R.id.menu_about)
+            if (item.getItemId() == R.id.menu_about)
                 showAboutDialog();
             return true;
         });
@@ -71,10 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showAboutDialog() {
-        startActivity(new Intent(this,AboutDialog.class));
+        startActivity(new Intent(this, AboutDialog.class));
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private void setUpViews() {
         switchPreventPowerOff = findViewById(R.id.switch_prevent_power_off);
         switchBlockNotifications = findViewById(R.id.switch_block_notifications);
@@ -88,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvDurationHours = findViewById(R.id.tv_duration_hours);
         tvDurationMinutes = findViewById(R.id.tv_duration_minutes);
         tvDurationSeconds = findViewById(R.id.tv_duration_seconds);
+
 
         // TODO: Add touch listener to increase duration on holding down the button
         btnLockDevice = findViewById(R.id.btn_lock_device);
@@ -105,12 +117,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.btn_increment_hours) {
+            if (durationHours == 16)
+                Toast.makeText(this, R.string.hour_limit_exceeded, Toast.LENGTH_SHORT).show();
             durationHours++;
         } else if (id == R.id.btn_decrement_hours) {
             if (durationHours != 0) durationHours--;
         } else if (id == R.id.btn_increment_minutes) {
             durationMinutes += 5;
-            if(durationMinutes == 60)
+            if (durationMinutes == 60)
                 durationMinutes = 0;
         } else if (id == R.id.btn_decrement_minutes) {
             if (durationMinutes != 0) durationMinutes -= 5;
@@ -142,10 +156,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(intentBlockerService);
         else startService(intentBlockerService);
-    }
-
-    private void notifyAboutAdminPermission() {
-        if (!new AppPreferences(this).getBoolean(Constants.PREF_HAS_ADMIN_PERMISSION))
-            Toast.makeText(this, "Device ADMIN Permission is denied", Toast.LENGTH_SHORT).show();
     }
 }
