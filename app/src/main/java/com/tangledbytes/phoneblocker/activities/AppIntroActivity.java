@@ -1,14 +1,13 @@
 package com.tangledbytes.phoneblocker.activities;
 
-import android.app.admin.DeviceAdminReceiver;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -25,9 +24,6 @@ import com.tangledbytes.phoneblocker.utils.Utils;
 public class AppIntroActivity extends AppIntro {
     private static final String TAG = "AppIntroActivity";
     AppIntroCustomLayoutFragment permissionFragment;
-    Button btnGrantBootPermission;
-    Button btnGrantAdminPermission;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +67,16 @@ public class AppIntroActivity extends AppIntro {
 
     @Override
     protected void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
-        if (newFragment == null)
+        super.onSlideChanged(oldFragment, newFragment);
+        updatePermissionButtons();
+    }
+
+    private void updatePermissionButtons() {
+        Button btnGrantAdminPermission = findViewById(R.id.btn_grant_admin_permission);
+        Button btnGrantBootPermission = findViewById(R.id.btn_grant_boot_permission);
+        if(btnGrantAdminPermission == null || btnGrantBootPermission == null)
+            // Current slide might not be the slide containing these buttons
             return;
-        if (!newFragment.equals(permissionFragment)) {
-            setButtonsEnabled(true);
-            return;
-        }
-        setButtonsEnabled(false);
-        btnGrantAdminPermission = findViewById(R.id.btn_grant_admin_permission);
-        btnGrantBootPermission = findViewById(R.id.btn_grant_boot_permission);
         btnGrantAdminPermission.setOnClickListener((View view) -> {
             ComponentName componentDeviceAdmin = new ComponentName(this, AdminReceiver.class);
             Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
@@ -88,10 +85,6 @@ public class AppIntroActivity extends AppIntro {
         });
         btnGrantBootPermission.setOnClickListener((View view) -> {
         });
-        updatePermissionButtons();
-    }
-
-    private void updatePermissionButtons() {
         if (Utils.hasDeviceAdminPermission(this) && btnGrantAdminPermission.isEnabled()) {
             btnGrantAdminPermission.setEnabled(false);
             btnGrantAdminPermission.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.green_80)));
@@ -114,6 +107,8 @@ public class AppIntroActivity extends AppIntro {
 
         if (Utils.hasBootPermission(this) && Utils.hasDeviceAdminPermission(this))
             setButtonsEnabled(true);
+        else
+            setButtonsEnabled(false);
     }
 
     @Override
@@ -126,7 +121,6 @@ public class AppIntroActivity extends AppIntro {
     @Override
     protected void onResume() {
         super.onResume();
-        if(btnGrantAdminPermission != null && btnGrantBootPermission != null)
-            updatePermissionButtons();
+        updatePermissionButtons();
     }
 }
