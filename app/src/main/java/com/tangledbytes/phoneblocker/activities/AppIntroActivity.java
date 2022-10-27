@@ -5,7 +5,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -24,6 +23,7 @@ import com.tangledbytes.phoneblocker.utils.Utils;
 public class AppIntroActivity extends AppIntro {
     private static final String TAG = "AppIntroActivity";
     AppIntroCustomLayoutFragment permissionFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,14 +68,17 @@ public class AppIntroActivity extends AppIntro {
     @Override
     protected void onSlideChanged(@Nullable Fragment oldFragment, @Nullable Fragment newFragment) {
         super.onSlideChanged(oldFragment, newFragment);
-        updatePermissionButtons();
+        if (newFragment != null && newFragment.equals(permissionFragment))
+            updatePermissionButtons();
+        else
+            setButtonsEnabled(true);
     }
 
     private void updatePermissionButtons() {
         Button btnGrantAdminPermission = findViewById(R.id.btn_grant_admin_permission);
         Button btnGrantBootPermission = findViewById(R.id.btn_grant_boot_permission);
-        if(btnGrantAdminPermission == null || btnGrantBootPermission == null)
-            // Current slide might not be the slide containing these buttons
+        if (btnGrantAdminPermission == null || btnGrantBootPermission == null)
+            // This might happen because if fragment is not loaded yet
             return;
         btnGrantAdminPermission.setOnClickListener((View view) -> {
             ComponentName componentDeviceAdmin = new ComponentName(this, AdminReceiver.class);
@@ -105,10 +108,8 @@ public class AppIntroActivity extends AppIntro {
             btnGrantBootPermission.setText(R.string.grant);
         }
 
-        if (Utils.hasBootPermission(this) && Utils.hasDeviceAdminPermission(this))
-            setButtonsEnabled(true);
-        else
-            setButtonsEnabled(false);
+        // Set buttons enabled only if both the permissions are granted
+        setButtonsEnabled(Utils.hasBootPermission(this) && Utils.hasDeviceAdminPermission(this));
     }
 
     @Override
