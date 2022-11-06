@@ -1,13 +1,10 @@
-
 package com.tangledbytes.phoneblocker.utils;
 
-        import android.app.admin.DevicePolicyManager;
-        import android.content.ComponentName;
-        import android.content.Context;
-        import android.widget.Toast;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 
-        import com.tangledbytes.phoneblocker.activities.AppIntroActivity;
-        import com.tangledbytes.phoneblocker.receivers.AdminReceiver;
+import com.tangledbytes.phoneblocker.receivers.AdminReceiver;
 
 public class Utils {
     public static void sleepThread(long delayMillis) {
@@ -24,6 +21,7 @@ public class Utils {
         return mDPM != null && mDPM.isAdminActive(mAdminName);
     }
 
+    //TODO: Implement this method for the devices like MI. These devices do not give boot permission without enabling
     public static boolean hasBootPermission(Context context) {
         return true;
     }

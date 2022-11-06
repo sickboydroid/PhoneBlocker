@@ -7,23 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primaryColor">#ff003c</color>
-    <color name="primaryLightColor">#ff5582</color>
-    <color name="primaryDarkColor">#CD0E3B</color>
-    <color name="secondaryColor">#33517e</color>
-    <color name="secondaryLightColor">#537c97</color>
-    <color name="secondaryDarkColor">#2D4365</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
 
-    <color name="materialLight">#E5E3F1</color>
-    <color name="materialLightBlack">#B5B5B5</color>
-    <color name="materialTeal">#A6A184</color>
-    <color name="materialPink">#A29CF4</color>
-    <color name="slidesBackground1">#282828</color>
-    <color name="slidesBackground2">#282828</color>
-    <color name="slidesBackground3">#282828</color>
     <color name="materialDark">#282828</color>
     <color name="red_80">#B0FF1744</color>
     <color name="green_80">#B000E676</color>
+    <color name="backgroundLayoutPermissionRequest">@color/white</color>
 </resources>

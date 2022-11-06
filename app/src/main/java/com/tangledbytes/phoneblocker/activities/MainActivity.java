@@ -28,12 +28,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SwitchCompat switchBlockNotifications;
     private SwitchCompat switchBlockCalls;
     private Button btnLockDevice;
-    private Button btnIncrementHours;
-    private Button btnIncrementMinutes;
-    private Button btnIncrementSeconds;
-    private Button btnDecrementHours;
-    private Button btnDecrementMinutes;
-    private Button btnDecrementSeconds;
     private TextView tvDurationHours;
     private TextView tvDurationMinutes;
     private TextView tvDurationSeconds;
@@ -90,17 +84,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switchPreventPowerOff = findViewById(R.id.switch_prevent_power_off);
         switchBlockNotifications = findViewById(R.id.switch_block_notifications);
         switchBlockCalls = findViewById(R.id.switch_block_calls);
-        btnIncrementHours = findViewById(R.id.btn_increment_hours);
-        btnDecrementHours = findViewById(R.id.btn_decrement_hours);
-        btnIncrementMinutes = findViewById(R.id.btn_increment_minutes);
-        btnDecrementMinutes = findViewById(R.id.btn_decrement_minutes);
-        btnIncrementSeconds = findViewById(R.id.btn_increment_seconds);
-        btnDecrementSeconds = findViewById(R.id.btn_decrement_seconds);
         tvDurationHours = findViewById(R.id.tv_duration_hours);
         tvDurationMinutes = findViewById(R.id.tv_duration_minutes);
         tvDurationSeconds = findViewById(R.id.tv_duration_seconds);
-
         btnLockDevice = findViewById(R.id.btn_lock_device);
+        Button btnIncrementHours = findViewById(R.id.btn_increment_hours);
+        Button btnDecrementHours = findViewById(R.id.btn_decrement_hours);
+        Button btnIncrementMinutes = findViewById(R.id.btn_increment_minutes);
+        Button btnDecrementMinutes = findViewById(R.id.btn_decrement_minutes);
+        Button btnIncrementSeconds = findViewById(R.id.btn_increment_seconds);
+        Button btnDecrementSeconds = findViewById(R.id.btn_decrement_seconds);
+
         btnIncrementHours.setOnClickListener(this);
         btnDecrementHours.setOnClickListener(this);
         btnIncrementMinutes.setOnClickListener(this);
