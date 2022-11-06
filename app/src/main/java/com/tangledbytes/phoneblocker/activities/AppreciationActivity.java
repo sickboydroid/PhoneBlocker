@@ -160,4 +160,8 @@ public class AppreciationActivity extends AppCompatActivity {
         });
         tvProgressTitle.startAnimation(fadeOut);
     }
+
+    @Override
+    public void onBackPressed() {
+    }
 }
