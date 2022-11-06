@@ -11,5 +11,5 @@
     <color name="materialDark">#282828</color>
     <color name="red_80">#B0FF1744</color>
     <color name="green_80">#B000E676</color>
-    <color name="backgroundLayoutPermissionRequest">@color/white</color>
+    <color name="backgroundLayoutPermissionRequest">@color/materialDark</color>
 </resources>
