@@ -3,11 +3,9 @@ package com.tangledbytes.phoneblocker.utils;
 import android.content.Context;
 
 public class BlockerSession {
-    private final Context context;
     private final AppPreferences prefs;
 
     public BlockerSession(Context context) {
-        this.context = context;
         prefs = new AppPreferences(context);
     }
 
