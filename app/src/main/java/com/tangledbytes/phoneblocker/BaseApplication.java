@@ -3,14 +3,12 @@ package com.tangledbytes.phoneblocker;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.ads.MobileAds;
 import com.tangledbytes.libtb.log.XLog;
-import com.tangledbytes.phoneblocker.activities.AppIntroActivity;
 import com.tangledbytes.phoneblocker.utils.Constants;
 
 public class BaseApplication extends Application {
