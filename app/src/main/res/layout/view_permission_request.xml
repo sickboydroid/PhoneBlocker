@@ -8,7 +8,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="We need following permissions before we proceed:"
+        android:text="@string/permissions_needed_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textSize="18sp" />
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Device Admin Permission"
+            android:text="@string/device_admin_permission"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="14sp" />
 
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Start on boot permission"
+            android:text="@string/start_on_boot_permission"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textSize="14sp" />
 

@@ -89,7 +89,7 @@ public class BlockerService extends Service {
     }
 
     private static class CountdownManager {
-        long countdownEnd;
+       final long countdownEnd;
 
         private CountdownManager(long durationMillis) {
             countdownEnd = System.currentTimeMillis() + durationMillis;

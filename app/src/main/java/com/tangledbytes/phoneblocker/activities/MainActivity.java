@@ -28,19 +28,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SwitchCompat switchBlockNotifications;
     private SwitchCompat switchBlockCalls;
     private Button btnLockDevice;
-    private Button btnIncrementHours;
-    private Button btnIncrementMinutes;
-    private Button btnIncrementSeconds;
-    private Button btnDecrementHours;
-    private Button btnDecrementMinutes;
-    private Button btnDecrementSeconds;
     private TextView tvDurationHours;
     private TextView tvDurationMinutes;
     private TextView tvDurationSeconds;
-    //TODO: set time to hrs = 1, mins = 30, seconds = 0
+    //TODO: set time to hrs = 1, min = 30, seconds = 0 in release version
     private int durationHours = 0;
     private int durationMinutes = 0;
-    private int durationSeconds = 15;
+    private int durationSeconds = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,19 +84,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switchPreventPowerOff = findViewById(R.id.switch_prevent_power_off);
         switchBlockNotifications = findViewById(R.id.switch_block_notifications);
         switchBlockCalls = findViewById(R.id.switch_block_calls);
-        btnIncrementHours = findViewById(R.id.btn_increment_hours);
-        btnDecrementHours = findViewById(R.id.btn_decrement_hours);
-        btnIncrementMinutes = findViewById(R.id.btn_increment_minutes);
-        btnDecrementMinutes = findViewById(R.id.btn_decrement_minutes);
-        btnIncrementSeconds = findViewById(R.id.btn_increment_seconds);
-        btnDecrementSeconds = findViewById(R.id.btn_decrement_seconds);
         tvDurationHours = findViewById(R.id.tv_duration_hours);
         tvDurationMinutes = findViewById(R.id.tv_duration_minutes);
         tvDurationSeconds = findViewById(R.id.tv_duration_seconds);
-
-
-        // TODO: Add touch listener to increase duration on holding down the button
         btnLockDevice = findViewById(R.id.btn_lock_device);
+        Button btnIncrementHours = findViewById(R.id.btn_increment_hours);
+        Button btnDecrementHours = findViewById(R.id.btn_decrement_hours);
+        Button btnIncrementMinutes = findViewById(R.id.btn_increment_minutes);
+        Button btnDecrementMinutes = findViewById(R.id.btn_decrement_minutes);
+        Button btnIncrementSeconds = findViewById(R.id.btn_increment_seconds);
+        Button btnDecrementSeconds = findViewById(R.id.btn_decrement_seconds);
+
         btnIncrementHours.setOnClickListener(this);
         btnDecrementHours.setOnClickListener(this);
         btnIncrementMinutes.setOnClickListener(this);
@@ -111,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDecrementSeconds.setOnClickListener(this);
         btnLockDevice.setOnClickListener(view -> startBlocking());
         updateDurationTextViews();
+
+        // TODO: Add code for blocking calls and notifications
+        Utils.disable(findViewById(R.id.parent_prevent_phone_calls));
+        Utils.disable(findViewById(R.id.parent_prevent_phone_notifs));
     }
 
     @Override

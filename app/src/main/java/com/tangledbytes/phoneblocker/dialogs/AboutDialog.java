@@ -15,8 +15,6 @@ public class AboutDialog extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_about);
         Button btnOk = findViewById(R.id.btn_ok);
-        btnOk.setOnClickListener((View view) -> {
-            finish();
-        });
+        btnOk.setOnClickListener((View view) -> finish());
     }
 }
