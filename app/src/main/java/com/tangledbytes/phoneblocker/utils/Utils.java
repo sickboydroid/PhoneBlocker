@@ -3,6 +3,8 @@ package com.tangledbytes.phoneblocker.utils;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.tangledbytes.phoneblocker.receivers.AdminReceiver;
 
@@ -24,5 +26,16 @@ public class Utils {
     //TODO: Implement this method for the devices like MI. These devices do not give boot permission without enabling
     public static boolean hasBootPermission(Context context) {
         return true;
+    }
+
+    public static void disable(ViewGroup layout) {
+        layout.setEnabled(false);
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            View child = layout.getChildAt(i);
+            if (child instanceof ViewGroup)
+                disable((ViewGroup) child);
+            else
+                child.setEnabled(false);
+        }
     }
 }

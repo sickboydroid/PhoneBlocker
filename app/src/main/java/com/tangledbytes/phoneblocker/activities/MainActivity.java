@@ -103,6 +103,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnDecrementSeconds.setOnClickListener(this);
         btnLockDevice.setOnClickListener(view -> startBlocking());
         updateDurationTextViews();
+
+        // TODO: Add code for blocking calls and notifications
+        Utils.disable(findViewById(R.id.parent_prevent_phone_calls));
+        Utils.disable(findViewById(R.id.parent_prevent_phone_notifs));
     }
 
     @Override
