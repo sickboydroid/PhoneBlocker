@@ -15,7 +15,7 @@ public class BlockerSession {
         return getEndTime() >= System.currentTimeMillis();
     }
 
-    public long getStartTime() {
+    private long getStartTime() {
         return prefs.getLong(Constants.PREF_BLOCK_SESSION_START_TIME);
     }
 
@@ -23,8 +23,15 @@ public class BlockerSession {
         return prefs.getLong(Constants.PREF_BLOCK_SESSION_END_TIME);
     }
 
-    public long getDuration() {
+    public long getSessionDuration() {
         return getEndTime() - getStartTime();
+    }
+
+    public long getRemainingSessionDuration() {
+        long remainingDuration = getEndTime() - System.currentTimeMillis();
+        if(remainingDuration <= 0)
+            return 0;
+        return remainingDuration;
     }
 
     public boolean hasShownAppreciationActivity() {

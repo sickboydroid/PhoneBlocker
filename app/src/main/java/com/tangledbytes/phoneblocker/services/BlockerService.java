@@ -44,7 +44,7 @@ public class BlockerService extends Service {
         preventPowerOff = blockerSession.preventFromPowerOff();
         blockNotifications = blockerSession.blockNotifications();
         blockCalls = blockerSession.blockCalls();
-        long countdownDuration = blockerSession.getDuration();
+        long countdownDuration = blockerSession.getRemainingSessionDuration();
         showNotification();
         blockCallsAndNotifications();
         countdownManager = CountdownManager.startCountdown(countdownDuration);
