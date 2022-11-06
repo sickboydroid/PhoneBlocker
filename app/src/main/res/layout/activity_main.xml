@@ -298,14 +298,16 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <!--TODO: Change unit ID in release version
+         Real ad unit ID: ca-app-pub-3970034979547566/1565738930
+         Test ad unit ID: ca-app-pub-3940256099942544/6300978111-->
     <com.google.android.gms.ads.AdView
         android:id="@+id/adview_banner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        ads:adUnitId="ca-app-pub-3970034979547566/1565738930"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--        ads:adUnitId="ca-app-pub-3970034979547566/1565738930"/>-->
 </LinearLayout>

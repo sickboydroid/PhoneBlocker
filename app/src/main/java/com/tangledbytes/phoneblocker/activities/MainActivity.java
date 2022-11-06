@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvDurationHours;
     private TextView tvDurationMinutes;
     private TextView tvDurationSeconds;
-    //TODO: set time to hrs = 1, mins = 30, seconds = 0
+    //TODO: set time to hrs = 1, min = 30, seconds = 0 in release version
     private int durationHours = 0;
     private int durationMinutes = 0;
-    private int durationSeconds = 15;
+    private int durationSeconds = 20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +100,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvDurationMinutes = findViewById(R.id.tv_duration_minutes);
         tvDurationSeconds = findViewById(R.id.tv_duration_seconds);
 
-
-        // TODO: Add touch listener to increase duration on holding down the button
         btnLockDevice = findViewById(R.id.btn_lock_device);
         btnIncrementHours.setOnClickListener(this);
         btnDecrementHours.setOnClickListener(this);

@@ -102,8 +102,10 @@ public class AppreciationActivity extends AppCompatActivity {
 
     private void setUpAds() {
         AdRequest adRequest = new AdRequest.Builder().build();
-        //TODO: ca-app-pub-3970034979547566/8171811204
-        InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest, new InterstitialAdLoadCallback() {
+        //TODO: Change unit ID in release version
+        // Real ad unit ID: ca-app-pub-3970034979547566/8171811204
+        // Test ad unit ID: ca-app-pub-3940256099942544/1033173712
+        InterstitialAd.load(this, "ca-app-pub-3970034979547566/8171811204", adRequest, new InterstitialAdLoadCallback() {
             @Override
             public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
                 interstitialAd.setFullScreenContentCallback(adCallback);
