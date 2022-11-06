@@ -8,12 +8,14 @@ import android.os.Build;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.ads.MobileAds;
+import com.tangledbytes.libtb.log.XLog;
 import com.tangledbytes.phoneblocker.utils.Constants;
 
 public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        XLog.initialize(getFilesDir());
         createNotificationChannel();
         MobileAds.initialize(this);
     }
