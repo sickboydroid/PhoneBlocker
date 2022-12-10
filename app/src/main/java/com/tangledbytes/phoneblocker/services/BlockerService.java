@@ -144,10 +144,10 @@ public class BlockerService extends Service {
             while (!countdownManager.isCountdownComplete()) {
                 Log.d(TAG, "Remaining Time: " + countdownManager.getRemainingMillis());
                 updateNotification();
-                Utils.sleepThread(250);
+                Utils.sleepThread(1500);
                 // Screen is off, just pass for now
                 if (!powerManager.isInteractive()) {
-                    Utils.sleepThread(500);
+                    Utils.sleepThread(3000);
                     continue;
                 }
                 // Screen is on, prevent any system dialog (for preventing power off of phone)
