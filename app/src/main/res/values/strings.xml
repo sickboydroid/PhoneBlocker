@@ -36,4 +36,5 @@
     <string name="start_on_boot_permission">Start on boot permission</string>
     <string name="permissions_needed_title">We need following permissions before we proceed:</string>
     <string name="tagline">let\'s overcome smartphone addiction</string>
+    <string name="remaining_time_format">%02d : %02d : %02d</string>
 </resources>

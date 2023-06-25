@@ -38,4 +38,15 @@ public class Utils {
                 child.setEnabled(false);
         }
     }
+
+    /**
+     * Returns different components of provided time.
+     *
+     * @return int[0] is secs, int[1] is minutes and int[2] is hours*/
+    public static int[] getComponents(long millis) {
+        int secs = (int) (millis / 1000) % 60;
+        int min = (int) ((millis / (1000 * 60)) % 60);
+        int hr = (int) (millis / (1000 * 60 * 60));
+        return new int[] {secs, min, hr};
+    }
 }

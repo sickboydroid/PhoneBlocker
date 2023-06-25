@@ -1,12 +1,20 @@
 package com.tangledbytes.phoneblocker.utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+
+import com.tangledbytes.phoneblocker.activities.AppreciationActivity;
+import com.tangledbytes.phoneblocker.services.BlockerService;
 
 public class BlockerSession {
     private final AppPreferences prefs;
+    private final Context context;
 
-    public BlockerSession(Context context) {
+    public BlockerSession(Context context)
+    {
         prefs = new AppPreferences(context);
+        this.context = context;
     }
 
     public boolean isSessionPending() {
@@ -60,5 +68,26 @@ public class BlockerSession {
 
     public void setHasShownAppreciationActivity(boolean shown) {
         prefs.changePreference(Constants.PREF_BLOCK_SESSION_HAS_SHOWN_APPRECIATION_ACTIVITY, shown);
+    }
+
+    /**
+     * Restarts BlockerService or shows AppreciationActivity if needed
+     * In most cases you should exit when it returns true
+     * @return true when it has done something
+     * */
+    public boolean invalidateSession() {
+        if (isSessionPending()) {
+            Intent intentBlockerService = new Intent(context, BlockerService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                context.startForegroundService(intentBlockerService);
+            else
+                context.startService(intentBlockerService);
+            return true;
+        } else if(!hasShownAppreciationActivity()) {
+            Intent intentAppreciationActivity = new Intent(context, AppreciationActivity.class);
+            context.startActivity(intentAppreciationActivity);
+            return true;
+        }
+        return false;
     }
 }

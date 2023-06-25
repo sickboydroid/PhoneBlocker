@@ -1,8 +1,12 @@
 package com.tangledbytes.phoneblocker.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +27,11 @@ import com.tangledbytes.phoneblocker.utils.BlockerSession;
 import com.tangledbytes.phoneblocker.utils.Constants;
 import com.tangledbytes.phoneblocker.utils.Utils;
 
+import java.util.MissingFormatArgumentException;
+import java.util.Timer;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private SwitchCompat switchPreventPowerOff;
     private SwitchCompat switchBlockNotifications;
     private SwitchCompat switchBlockCalls;
@@ -34,7 +42,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //TODO: set time to hrs = 1, min = 30, seconds = 0 in release version
     private int durationHours = 0;
     private int durationMinutes = 0;
-    private int durationSeconds = 20;
+    private int durationSeconds = 30;
+
+    private class OnLockStateChanged extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Constants.BC_DEVICE_LOCKED))
+                btnLockDevice.setEnabled(false);
+            else if(intent.getAction().equals(Constants.BC_DEVICE_UNLOCKED))
+                btnLockDevice.setEnabled(true);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +67,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intentAppIntro);
             finish();
         }
+        new BlockerSession(this).invalidateSession();
         setContentView(R.layout.activity_main);
         setUpToolbar();
         setUpAds();
         setUpViews();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.BC_DEVICE_LOCKED);
+        filter.addAction(Constants.BC_DEVICE_UNLOCKED);
+        registerReceiver(new OnLockStateChanged(), filter);
     }
 
     private boolean shouldShowIntro() {
@@ -88,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvDurationMinutes = findViewById(R.id.tv_duration_minutes);
         tvDurationSeconds = findViewById(R.id.tv_duration_seconds);
         btnLockDevice = findViewById(R.id.btn_lock_device);
+
         Button btnIncrementHours = findViewById(R.id.btn_increment_hours);
         Button btnDecrementHours = findViewById(R.id.btn_decrement_hours);
         Button btnIncrementMinutes = findViewById(R.id.btn_increment_minutes);
@@ -141,16 +165,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startBlocking() {
+        BlockerSession session = new BlockerSession(this);
+        if(session.invalidateSession()) {
+            Toast.makeText(this, "Timer is already running", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         // Convert duration to millis
         long durationMillis = durationHours * 60 * 60 * 1000L;
         durationMillis += durationMinutes * 60 * 1000L;
         durationMillis += durationSeconds * 1000L;
 
         Intent intentBlockerService = new Intent(this, BlockerService.class);
-        BlockerSession session = new BlockerSession(this);
         session.createSession(durationMillis, switchPreventPowerOff.isChecked(), switchBlockCalls.isChecked(), switchBlockNotifications.isChecked());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             startForegroundService(intentBlockerService);
         else startService(intentBlockerService);
+        finish();
     }
 }

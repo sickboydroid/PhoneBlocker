@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.tangledbytes.phoneblocker.R;
 import com.tangledbytes.phoneblocker.activities.AppreciationActivity;
+import com.tangledbytes.phoneblocker.activities.TimerActivity;
 import com.tangledbytes.phoneblocker.utils.BlockerSession;
 import com.tangledbytes.phoneblocker.utils.Constants;
 import com.tangledbytes.phoneblocker.utils.Utils;
@@ -31,6 +32,7 @@ public class BlockerService extends Service {
     private boolean blockNotifications;
     private boolean blockCalls;
     private Handler handler;
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -49,6 +51,7 @@ public class BlockerService extends Service {
         blockCallsAndNotifications();
         countdownManager = CountdownManager.startCountdown(countdownDuration);
         startBlockerThread();
+        sendBroadcast(new Intent(Constants.BC_DEVICE_LOCKED));
         return START_REDELIVER_INTENT;
     }
 
@@ -58,6 +61,7 @@ public class BlockerService extends Service {
         PendingIntent piAppreciationActivity= PendingIntent.getActivity(this, 0, new Intent(this, AppreciationActivity.class), -1);
         notificationBuilder.setContentIntent(piAppreciationActivity);
         NotificationManagerCompat.from(this).notify(FOREGROUND_NOTIFICATION_ID, notificationBuilder.build());
+        sendBroadcast(new Intent(Constants.BC_DEVICE_UNLOCKED));
         new AppreciationActivityStarter().start();
     }
 
@@ -81,10 +85,8 @@ public class BlockerService extends Service {
 
     private void updateNotification() {
         long remainingMillis = countdownManager.getRemainingMillis();
-        int remainingSeconds = (int) (remainingMillis / 1000) % 60;
-        int remainingMinutes = (int) ((remainingMillis / (1000 * 60)) % 60);
-        int remainingHours = (int) (remainingMillis / (1000 * 60 * 60));
-        notificationBuilder.setContentText("Remaining: " + remainingHours + " hours " + remainingMinutes + " minutes " + remainingSeconds + " seconds");
+        int[] remainingTimeComponents = Utils.getComponents(remainingMillis);
+        notificationBuilder.setContentText("Remaining: " + remainingTimeComponents[2] + " hours " + remainingTimeComponents[1] + " minutes " + remainingTimeComponents[0] + " seconds");
         NotificationManagerCompat.from(this).notify(FOREGROUND_NOTIFICATION_ID, notificationBuilder.build());
     }
 
@@ -144,7 +146,7 @@ public class BlockerService extends Service {
             while (!countdownManager.isCountdownComplete()) {
                 Log.d(TAG, "Remaining Time: " + countdownManager.getRemainingMillis());
                 updateNotification();
-                Utils.sleepThread(250);
+                Utils.sleepThread(200);
                 // Screen is off, just pass for now
                 if (!powerManager.isInteractive()) {
                     Utils.sleepThread(500);
@@ -154,7 +156,13 @@ public class BlockerService extends Service {
                 if (preventPowerOff)
                     handler.post(() -> sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)));
                 // Screen is on and also device is unlocked so lock it
-                if (!keyguardManager.isKeyguardLocked()) dpm.lockNow();
+                if (!keyguardManager.isKeyguardLocked()) {
+                    Intent timerActivity = new Intent(BlockerService.this, TimerActivity.class);
+                    timerActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    handler.post(()->startActivity(timerActivity));
+                    Utils.sleepThread(3500);
+                    dpm.lockNow();
+                }
             }
             isBlockerThreadRunning = false;
             onCountdownCompletes();

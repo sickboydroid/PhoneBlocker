@@ -1,6 +1,8 @@
 package com.tangledbytes.phoneblocker.utils;
 
 public class Constants {
+    public static final String BC_DEVICE_LOCKED = "device_locked";
+    public static final String BC_DEVICE_UNLOCKED = "device_unlocked";
     public static final String APP_PREFS_NAME = "blocker_preferences";
     public static final String PREF_HAS_SEEN_APP_INTRO = "has_seen_app_intro";
     public static final String EXTRA_REQUEST_ONLY_PERMISSIONS = "request_only_permissions";

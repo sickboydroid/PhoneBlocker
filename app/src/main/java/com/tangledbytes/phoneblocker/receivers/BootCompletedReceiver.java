@@ -17,15 +17,6 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "Boot Completed");
         BlockerSession blockerSession = new BlockerSession(context);
-        if (blockerSession.isSessionPending()) {
-            Intent intentBlockerService = new Intent(context, BlockerService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-                context.startForegroundService(intentBlockerService);
-            else
-                context.startService(intentBlockerService);
-        } else if(!blockerSession.hasShownAppreciationActivity()) {
-            Intent intentAppreciationActivity = new Intent(context, AppreciationActivity.class);
-            context.startActivity(intentAppreciationActivity);
-        }
+        blockerSession.invalidateSession();
     }
 }
