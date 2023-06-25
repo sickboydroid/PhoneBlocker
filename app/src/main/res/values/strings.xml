@@ -37,4 +37,5 @@
     <string name="permissions_needed_title">We need following permissions before we proceed:</string>
     <string name="tagline">let\'s overcome smartphone addiction</string>
     <string name="remaining_time_format">%02d : %02d : %02d</string>
+    <string name="display_over_other_apps">Display Over Other Apps</string>
 </resources>

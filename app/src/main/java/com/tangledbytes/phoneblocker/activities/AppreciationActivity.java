@@ -27,6 +27,9 @@ import java.util.Random;
 public class AppreciationActivity extends AppCompatActivity {
     public static final String TAG = "AppreciationActivity";
     private InterstitialAd mInterstitialAd;
+    private TextView tvProgressTitle;
+    private Button btnFinish;
+    private LinearProgressIndicator pbLoading;
     private final FullScreenContentCallback adCallback = new FullScreenContentCallback() {
         @Override
         public void onAdClicked() {
@@ -63,9 +66,6 @@ public class AppreciationActivity extends AppCompatActivity {
             Log.d(TAG, "Ad showed fullscreen content.");
         }
     };
-    private TextView tvProgressTitle;
-    private Button btnFinish;
-    private LinearProgressIndicator pbLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

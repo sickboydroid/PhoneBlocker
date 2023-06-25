@@ -3,9 +3,12 @@ package com.tangledbytes.phoneblocker.utils;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tangledbytes.phoneblocker.activities.MainActivity;
 import com.tangledbytes.phoneblocker.receivers.AdminReceiver;
 
 public class Utils {
@@ -48,5 +51,10 @@ public class Utils {
         int min = (int) ((millis / (1000 * 60)) % 60);
         int hr = (int) (millis / (1000 * 60 * 60));
         return new int[] {secs, min, hr};
+    }
+
+    public static boolean hasOverlayPermission(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) return Settings.canDrawOverlays(context);
+        return true;
     }
 }

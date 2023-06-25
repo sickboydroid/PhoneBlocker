@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvDurationMinutes;
     private TextView tvDurationSeconds;
     //TODO: set time to hrs = 1, min = 30, seconds = 0 in release version
-    private int durationHours = 0;
-    private int durationMinutes = 0;
-    private int durationSeconds = 30;
+    private int durationHours = 1;
+    private int durationMinutes = 30;
+    private int durationSeconds = 0;
 
     private class OnLockStateChanged extends BroadcastReceiver {
         @Override
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intentAppIntro = new Intent(this, AppIntroActivity.class);
             startActivity(intentAppIntro);
             finish();
-        } else if (!Utils.hasBootPermission(this) || !Utils.hasDeviceAdminPermission(this)) {
+        } else if (hasRequiredPermissions()) {
             Intent intentAppIntro = new Intent(this, AppIntroActivity.class);
             intentAppIntro.putExtra(Constants.EXTRA_REQUEST_ONLY_PERMISSIONS, true);
             startActivity(intentAppIntro);
@@ -76,6 +76,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         filter.addAction(Constants.BC_DEVICE_LOCKED);
         filter.addAction(Constants.BC_DEVICE_UNLOCKED);
         registerReceiver(new OnLockStateChanged(), filter);
+    }
+
+    private boolean hasRequiredPermissions() {
+        return !Utils.hasBootPermission(this) || !Utils.hasOverlayPermission(this) || !Utils.hasDeviceAdminPermission(this);
     }
 
     private boolean shouldShowIntro() {
