@@ -93,7 +93,7 @@ public class AppIntroActivity extends AppIntro {
     }
 
     public void changePermissionBtnState(Button button, boolean permissionGranted) {
-        int color = permissionGranted ? R.color.green_80 : R.color.red_80;
+        int color = permissionGranted ? R.color.md_green_800 : R.color.md_red_800;
         int text = permissionGranted ? R.string.granted : R.string.grant;
         button.setEnabled(!permissionGranted);
         button.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(color)));

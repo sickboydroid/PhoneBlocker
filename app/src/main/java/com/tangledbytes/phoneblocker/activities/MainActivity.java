@@ -15,10 +15,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.tangledbytes.phoneblocker.R;
 import com.tangledbytes.phoneblocker.dialogs.AboutDialog;
 import com.tangledbytes.phoneblocker.services.BlockerService;
@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private class OnLockStateChanged extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.getAction().equals(Constants.BC_DEVICE_LOCKED))
+            if (intent.getAction().equals(Constants.BC_DEVICE_LOCKED))
                 btnLockDevice.setEnabled(false);
-            else if(intent.getAction().equals(Constants.BC_DEVICE_UNLOCKED))
+            else if (intent.getAction().equals(Constants.BC_DEVICE_UNLOCKED))
                 btnLockDevice.setEnabled(true);
         }
     }
@@ -87,8 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setUpToolbar() {
-        Toolbar toolbar = findViewById(R.id.activity_toolbar);
-        toolbar.setSubtitle(R.string.app_name);
+        MaterialToolbar toolbar = findViewById(R.id.activity_toolbar);
         toolbar.inflateMenu(R.menu.main_menu);
         toolbar.setOnMenuItemClickListener((MenuItem item) -> {
             if (item.getItemId() == R.id.menu_about)
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void startBlocking() {
         BlockerSession session = new BlockerSession(this);
-        if(session.invalidateSession()) {
+        if (session.invalidateSession()) {
             Toast.makeText(this, "Timer is already running", Toast.LENGTH_SHORT).show();
             return;
         }

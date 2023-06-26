@@ -9,14 +9,13 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/activity_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        ads:title="@string/app_name"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+        android:elevation="4dp"/>
 
     <View
         android:layout_width="0dp"
@@ -27,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="26sp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="26sp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,11 +62,11 @@
                 android:text="@string/prevent_power_off_descriptions" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_prevent_power_off"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:checked="true" />
 
     </LinearLayout>
 
@@ -98,7 +97,7 @@
                 android:text="@string/prevent_notifications_description" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_block_calls"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -132,7 +131,7 @@
                 android:text="@string/prevent_phone_calls_description" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_block_notifications"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

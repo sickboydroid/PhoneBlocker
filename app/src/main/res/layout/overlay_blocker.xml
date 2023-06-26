@@ -5,7 +5,7 @@
     android:animateLayoutChanges="true"
     android:background="@color/appintro_background_color"
     android:gravity="center_vertical"
-    android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"
+    android:theme="@style/Theme.PhoneBlocker"
     android:orientation="vertical">
 
     <TextView
@@ -38,6 +38,5 @@
         android:visibility="gone"
         android:textStyle="italic"
         android:fontFamily="sans-serif-medium"
-        android:textColor="@color/white"
         style="@style/TextAppearance.AppCompat.Medium" />
 </LinearLayout>

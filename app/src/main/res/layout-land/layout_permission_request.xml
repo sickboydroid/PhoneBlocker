@@ -41,12 +41,11 @@
         layout="@layout/view_permission_request"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:autoLink="web"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/midline"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintVertical_weight="3" />
 
