@@ -1,7 +1,9 @@
 # PhoneBlocker
 
-- This app lets you to lock your phone for the specified amount of time.
-- COMING SOON on playstore!!
+Lock your phone for specified amount of time
+
+#### Download it now from [this](https://github.com/sickboydroid/PhoneBlocker/releases/download/v2.0.0/PhoneBlocker-v2.0.0.apk) link
+
 
 
 ## Screenshots
